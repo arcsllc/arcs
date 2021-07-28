@@ -50,7 +50,8 @@
         'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
-        'views/purchase_requistion_form_b.xml'
+        'views/purchase_requistion_form_b.xml',
+        'views/account_move.xml'
     ],
     # only loaded in demonstration mode
 
