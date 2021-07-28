@@ -7,7 +7,7 @@ from odoo import models, fields, api, exceptions
 
 class MadfoxPurchaseRequisition(models.Model):
     _inherit = 'purchase.requisition'
-    retained_percentage = fields.Float(string="retain percentage", required=False)
+    retained_percentage = fields.Float(string="retain percentage")
     payment_term_id = fields.Many2one(comodel_name='account.payment.term', string="Payment Terms")
     
     def _action_confirm(self):
