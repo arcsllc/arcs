@@ -16,7 +16,7 @@ class Madfox_AccountMove(models.Model):
         res = super(Madfox_AccountMove, self).create(vals)
         if res.move_type=='in_invoice' and res.invoice_line_ids.purchase_order_id and res.invoice_line_ids.purchase_order_id.requisition_id.retained_percentage>0:
             retained_amount = res.amount_total * (res.invoice_line_ids.purchase_order_id.requisition_id.retained_percentage/100)
-            account = self.env['account.account'].search([('code', '=', 230101)])
+            account = self.env['account.account'].search([('code', '=', '230101')])
             rec = {
                 'partner_id': res.partner_id,
                 'quantity': '1',
