@@ -8,6 +8,7 @@ from odoo import models, fields, api, exceptions
 
 class Madfox_AccountMove(models.Model):
     _inherit = 'account.move'
+    requisition_id = fields.Char(name='req id')
 
 
     @api.model
