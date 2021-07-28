@@ -11,29 +11,36 @@ class MadfoxPurchaseRequisition(models.Model):
     payment_term_id = fields.Many2one(comodel_name='account.payment.term', string="Payment Terms")
     
     def _action_confirm(self):
+        lines = []
         res = super(MadfoxPurchaseRequisition, self)._action_confirm()
         #calc Purchase Requisition total amount
         totalAmount=0
-        for line in res.line_ids:
-            totalAmount += line.qty_ordered* line.unit_price
+        for line in self.line_ids:
+            totalAmount += line.qty_ordered * line.price_unit
         # get the tax rules
         taxRules = self.env['account.tax'].search([('id', '=', 11)])
         stampValue = 0
         taxs = []
         i = 1
-
+        account = self.env['account.account'].search([('code', '=', '335030')])
         if(taxRules.children_tax_ids):
             for taxRule in taxRules.children_tax_ids:
                 if(i==1):
                     #the stamp rules
                     stampValue=(taxRule.amount /100) * totalAmount
                     taxs.append([stampValue,taxRule.name])
+                    lines.append([0, False, {'account_id': account.id,  'name': taxRule.name,
+                         'debit': 0, 'credit': stampValue}])
                 else:
-                    taxs.append([(taxRule.amount /100) * stampValue,taxRule.name])
+                    taxs.append([(taxRule.amount / 100) * stampValue,taxRule.name])
+                    lines.append([0, False, {'account_id': account.id, 'name': taxRule.name,
+                                             'debit': 0, 'credit':(taxRule.amount / 100) * stampValue}])
 
                 i = i + 1
                     #create account move entre
+
+        self.env['account.move'].create({
+            'date': False, 'name': 'purchase agreement taxes', 'partner_id': 1,  'ref': 'purchase agreement'+res.id,'requisition_id': res.id,
+            'journal_id': 3, 'line_ids': lines
+        })
         return res
-       
-       
-       
