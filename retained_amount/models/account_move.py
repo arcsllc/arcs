@@ -31,7 +31,7 @@ class Madfox_AccountMove(models.Model):
                     'quantity': '1',
                     'name': 'Retained Amount',
                     'price_unit': retained_amount * -1,
-                    
+
                 }
             res.invoice_line_ids=[(0,0,rec)]
 
