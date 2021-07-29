@@ -41,7 +41,7 @@ class MadfoxPurchaseRequisition(models.Model):
 
                 i = i + 1
                     #create account move entre
-        lines.append([0, False, {'account_id': account.id, 'name': taxRule.name,
+        lines.append([0, False, {'account_id': account.id, 'name': 'مدفوعات',
 									 'debit': total, 'credit':0, 'partner_id': 21,}])
         self.env['account.move'].create({
              'name': 'purchase agreement taxes',   'ref': 'purchase agreement' ,'requisition_id': self.id,
