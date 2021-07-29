@@ -37,16 +37,16 @@ class MadfoxPurchaseRequisition(models.Model):
                     taxs.append([(taxRule.amount / 100) * stampValue, taxRule.name])
                     total = total + ((taxRule.amount / 100) * stampValue)
                     account = self.env['account.account'].search([('code', '=', '230704')])
-                lines.append([0, False, {'account_id': account.id, 'name': taxRule.name,
+                    lines.append([0, False, {'account_id': account.id, 'name': taxRule.name,
                                          'credit': 0, 'debit': (taxRule.amount / 100) * stampValue,
                                          'partner_id': 21, }])
 
-            else:
-                taxs.append([(taxRule.amount / 100) * stampValue, taxRule.name])
-                total = total + ((taxRule.amount / 100) * stampValue)
-                account = self.env['account.account'].search([('code', '=', '230705')])
-            lines.append([0, False, {'account_id': account.id, 'name': taxRule.name,
-                                     'credit': 0, 'debit': (taxRule.amount / 100) * stampValue, 'partner_id': 21, }])
+                else:
+                    taxs.append([(taxRule.amount / 100) * stampValue, taxRule.name])
+                    total = total + ((taxRule.amount / 100) * stampValue)
+                    account = self.env['account.account'].search([('code', '=', '230705')])
+                    lines.append([0, False, {'account_id': account.id, 'name': taxRule.name,
+                                         'credit': 0, 'debit': (taxRule.amount / 100) * stampValue, 'partner_id': 21, }])
 
         i = i + 1
         # create account move entre
