@@ -52,7 +52,7 @@ class MadfoxPurchaseRequisition(models.Model):
         # create account move entre
 
         account = self.env['account.account'].search([('code', '=', '335030')])
-        raise exceptions.ValidationError('total='+total+', stamp='+stampValue+', tax1='+taxs[1][0]+', tax2='+taxs[2][0]+', taxtotal='+(stampValue+taxs[1][0]+taxs[2][0]))
+        raise exceptions.ValidationError('total='+total+', stamp='+str(stampValue)+', tax1='+str(taxs[1][0])+', tax2='+str(taxs[2][0])+', taxtotal='+str((stampValue+taxs[1][0]+taxs[2][0])))
         lines.append([0, False, {'name': 'ضريبة عقد'+' ('+self.user_id.display_name+' '+self.name+')',
                          'debit': 0, 'credit': total, 'partner_id': 1, 'account_id': account.id}])
         self.env['account.move'].create({
