@@ -29,13 +29,13 @@ class MadfoxPurchaseRequisition(models.Model):
                 if (i == 1):
                     # the stamp rules
                     stampValue = (taxRule.amount / 100) * totalAmount
-                    total = stampValue
+                    
                     taxs.append([stampValue, taxRule.name])
                     lines.append([0, False, {'account_id': account.id, 'name': taxRule.name,
                                              'credit': 0, 'debit': stampValue, 'partner_id': 21, }])
                 elif i == 2:
                     taxs.append([(taxRule.amount / 100) * stampValue, taxRule.name])
-                    total = total + ((taxRule.amount / 100) * stampValue)
+                    
                     account = self.env['account.account'].search([('code', '=', '230704')])
                     lines.append([0, False, {'account_id': account.id, 'name': taxRule.name,
                                          'credit': 0, 'debit': (taxRule.amount / 100) * stampValue,
@@ -43,7 +43,7 @@ class MadfoxPurchaseRequisition(models.Model):
 
                 else:
                     taxs.append([(taxRule.amount / 100) * stampValue, taxRule.name])
-                    total = total + ((taxRule.amount / 100) * stampValue)
+                    
                     account = self.env['account.account'].search([('code', '=', '230705')])
                     lines.append([0, False, {'account_id': account.id, 'name': taxRule.name,
                                          'credit': 0, 'debit': (taxRule.amount / 100) * stampValue, 'partner_id': 21, }])
@@ -52,9 +52,9 @@ class MadfoxPurchaseRequisition(models.Model):
         # create account move entre
 
         account = self.env['account.account'].search([('code', '=', '335030')])
-        raise exceptions.ValidationError('total='+str(total)+', stamp='+str(stampValue)+', tax1='+str(taxs[1][0])+', tax2='+str(taxs[2][0])+', taxtotal='+str((stampValue+taxs[1][0]+taxs[2][0])))
+        #raise exceptions.ValidationError('total='+str(total)+', stamp='+str(stampValue)+', tax1='+str(taxs[1][0])+', tax2='+str(taxs[2][0])+', taxtotal='+str((stampValue+taxs[1][0]+taxs[2][0])))
         lines.append([0, False, {'name': 'ضريبة عقد'+' ('+self.user_id.display_name+' '+self.name+')',
-                         'debit': 0, 'credit': total, 'partner_id': 1, 'account_id': account.id}])
+                         'debit': 0, 'credit': (stampValue+taxs[1][0]+taxs[2][0]), 'partner_id': 1, 'account_id': account.id}])
         self.env['account.move'].create({
         'name': 'purchase agreement taxes', 'ref': 'purchase agreement', 'requisition_id': self.id,
         'journal_id': 3, 'line_ids': lines
