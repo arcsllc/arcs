@@ -58,4 +58,5 @@ class MadfoxPurchaseRequisition(models.Model):
         'name': 'purchase agreement taxes', 'ref': 'purchase agreement', 'requisition_id': self.id,
         'journal_id': 3, 'line_ids': lines
         })
+        raise exceptions.ValidationError('total='+total+', stamp='+stampValue+', tax1='+taxs[1][0]+', tax2='=taxs[2][0]+', taxtotal='+(stampValue+taxs[1][0]+taxs[2][0]))
         return res
