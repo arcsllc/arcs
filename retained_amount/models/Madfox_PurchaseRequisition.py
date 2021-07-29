@@ -15,6 +15,7 @@ class MadfoxPurchaseRequisition(models.Model):
         res = super(MadfoxPurchaseRequisition, self).action_in_progress()
         #calc Purchase Requisition total amount
         totalAmount = 0
+        total=0
         for line in self.line_ids:
             totalAmount += line.qty_ordered * line.price_unit
         # get the tax rules
@@ -28,17 +29,20 @@ class MadfoxPurchaseRequisition(models.Model):
                 if(i==1):
                     #the stamp rules
                     stampValue=(taxRule.amount /100) * totalAmount
+                    total=stampValue
                     taxs.append([stampValue,taxRule.name])
                     lines.append([0, False, {'account_id': account.id,  'name': taxRule.name,
-                         'debit': 0, 'credit': stampValue, 'partner_id': 1,}])
+                         'debit': 0, 'credit': stampValue, 'partner_id': 21,}])
                 else:
                     taxs.append([(taxRule.amount / 100) * stampValue,taxRule.name])
+                    total= total+ ((taxRule.amount / 100) * stampValue)
                     lines.append([0, False, {'account_id': account.id, 'name': taxRule.name,
-                                             'debit': 0, 'credit':(taxRule.amount / 100) * stampValue, 'partner_id': 1,}])
+                                             'debit': 0, 'credit':(taxRule.amount / 100) * stampValue, 'partner_id': 21,}])
 
                 i = i + 1
                     #create account move entre
-
+        lines.append([0, False, {'account_id': account.id, 'name': taxRule.name,
+									 'debit': total, 'credit':0, 'partner_id': 21,}])
         self.env['account.move'].create({
              'name': 'purchase agreement taxes',   'ref': 'purchase agreement' ,'requisition_id': self.id,
             'journal_id': 3, 'line_ids': lines
