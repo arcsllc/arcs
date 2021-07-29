@@ -17,7 +17,7 @@ class MadfoxPurchaseRequisition(models.Model):
         totalAmount = 0
         total=0
         for line in self.line_ids:
-            totalAmount += line.qty_ordered * line.price_unit
+            totalAmount += line.product_qty * line.price_unit
         # get the tax rules
         taxRules = self.env['account.tax'].search([('id', '=', 11)])
         stampValue = 0
