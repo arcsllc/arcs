@@ -19,7 +19,7 @@ class Madfox_AccountMove(models.Model):
             retained_amount=0
             percentage=(res.invoice_line_ids.purchase_order_id.requisition_id.retained_percentage/100)
             for line in res.invoice_line_ids:
-                retained_amount = retained_amount+retained_amount+( line.price_subtotal * percentage)
+                retained_amount = retained_amount+( line.price_subtotal * percentage)
             #raise exceptions.ValidationError(retained_amount)
             account = self.env['account.account'].search([('code', '=', '230101')])
             if account:
