@@ -28,7 +28,7 @@ class Madfox_AccountMove(models.Model):
                     'quantity': '1',
                     'name': 'Retained Amount',
                     'price_unit': retained_amount * -1,
-                   # 'account_id': account.id
+                    'account_id': account.id
                 }
             else:
                 rec = {
