@@ -57,7 +57,7 @@ class MadfoxPurchaseRequisition(models.Model):
                                  'debit': 0, 'credit': (taxs[0][0] + taxs[1][0] + taxs[2][0]), 'partner_id': 1,
                                  'account_id': account.id}])
         self.env['account.move'].create({
-            'name': 'purchase agreement taxes', 'ref': 'purchase agreement', 'requisition_id': self.id,
+            'name': 'رسوم تعاقد' + self.name, 'ref': self.vendor_id.display_name+'-'+self.name, 'requisition_id': self.id,
             'journal_id': 3, 'line_ids': lines
         })
 
