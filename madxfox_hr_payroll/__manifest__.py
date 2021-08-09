@@ -18,7 +18,7 @@ ARCS - Payroll Rules.
 
     'data': [
  
-        'views/hr_contract_form.xml',
+        #'views/hr_contract_form.xml',
        
     ],
     
